@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<sdf version="1.4">
+  <model name="thymio">
+    <static>true</static>
+    <pose>0 0 0.0305 0 0 0</pose>
+    <link name="base">
+      <inertial>
+        <mass>0.250</mass>
+        <inertia>
+          <ixx>0.000299854</ixx> <!-- ixx = mass * (y*y + z*z) / 12 -->
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.000290604</iyy> <!-- iyy = mass * (x*x + z*z) / 12 -->
+          <iyz>0.0</iyz>
+          <izz>0.000513417</izz> <!-- izz = mass * (x*x + y*y) / 12 -->
+        </inertia>
+      </inertial>
+      <collision name="base_collision">
+        <geometry>
+          <box>
+            <size>0.110 0.112 0.043</size>
+          </box>
+        </geomtry>
+      </collision>
+      <visual name="base_visual">
+        <geometry>
+          <box>
+            <size>0.110 0.112 0.043</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+  </model> 
+</sdf>

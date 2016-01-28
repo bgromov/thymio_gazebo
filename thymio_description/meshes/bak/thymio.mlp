@@ -1,0 +1,46 @@
+<!DOCTYPE MeshLabDocument>
+<MeshLabProject>
+ <MeshGroup>
+  <MLMesh label="thymio_body" filename="thymio_body.dae">
+   <MLMatrix44>
+-4.37114e-08 0 1 0 
+1 -4.37114e-08 4.37114e-08 0 
+4.37114e-08 1 1.91069e-15 0 
+0 0 0 1 
+</MLMatrix44>
+  </MLMesh>
+  <MLMesh label="thymio_proximity_sensors" filename="thymio_proximity_sensors.dae">
+   <MLMatrix44>
+-4.37114e-08 0 1 0 
+1 -4.37114e-08 4.37114e-08 0 
+4.37114e-08 1 1.91069e-15 0 
+0 0 0 1 
+</MLMatrix44>
+  </MLMesh>
+  <MLMesh label="thymio_left_wheel" filename="thymio_left_wheel.dae">
+   <MLMatrix44>
+-4.37114e-08 0 1 0 
+1 -4.37114e-08 4.37114e-08 0 
+4.37114e-08 1 1.91069e-15 0 
+0 0 0 1 
+</MLMatrix44>
+  </MLMesh>
+  <MLMesh label="thymio_right_wheel" filename="thymio_right_wheel.dae">
+   <MLMatrix44>
+-4.37114e-08 0 1 0 
+1 -4.37114e-08 4.37114e-08 0 
+4.37114e-08 1 1.91069e-15 0 
+0 0 0 1 
+</MLMatrix44>
+  </MLMesh>
+  <MLMesh label="thymio_body_collision" filename="thymio_body_collision.dae">
+   <MLMatrix44>
+-4.37114e-08 0 1 0 
+1 -4.37114e-08 4.37114e-08 0 
+4.37114e-08 1 1.91069e-15 0 
+0 0 0 1 
+</MLMatrix44>
+  </MLMesh>
+ </MeshGroup>
+ <RasterGroup/>
+</MeshLabProject>
