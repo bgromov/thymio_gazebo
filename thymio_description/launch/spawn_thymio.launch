@@ -1,5 +1,5 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find thymio_driver)/models/thymio.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find thymio_driver)/models/thymio.urdf.xacro" />
 
   <!--include file="$(find gazebo_ros)/launch/empty_world.launch" /-->
 
