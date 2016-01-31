@@ -21,11 +21,14 @@
       </inertial>
       <self_collide>true</self_collide>
       <collision name="collision_body">
-        <pose>0 0 0.0225 0 0 0</pose>
+        <!--pose>0 0 0.0225 0 0 0</pose-->
         <geometry>
-          <box>
+          <!--box>
             <size>0.110 0.112 0.045</size>
-          </box>
+          </box-->
+          <mesh>
+            <uri>model://thymio/meshes/thymio_body_collision.dae</uri>
+          </mesh>
         </geometry>
       </collision>
       <collision name="collision_caster">
@@ -65,6 +68,44 @@
         </geometry>
       </visual>
     </link>
+    <link name="proximity_0">
+      <pose>0.055 0 0.025 0 0 0</pose>
+      <inertial><mass>0.00001</mass></inertial>
+      <sensor type="ray" name="proximity_sensor_0">
+        <visualize>true</visualize>
+        <update_rate>15</update_rate>
+        <always_on>true</always_on>
+        <ray>
+          <range>
+            <min>0.010</min>
+            <max>0.200</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="proximity_sensor_0_controller" filename="libgazebo_ros_range.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>15</updateRate>
+          <robotNamespace>thymio</robotNamespace>
+          <radiation>infrared</radiation>
+        </plugin>
+      </sensor>
+    </link>
+    <joint type="revolute" name="proximity_0_joint">
+      <parent>body</parent>
+      <child>proximity_0</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0.0</lower>
+          <upper>0.0</upper>
+        </limit>
+      </axis>
+    </joint>
     <link name="left_wheel">
       <pose>-0.025 0.047 0.013 0 0 0</pose>
       <inertial>
@@ -84,6 +125,7 @@
       </inertial>
       <collision name="collision_left_wheel">
         <pose>0 0.00075 0 1.5707 0 0</pose>
+        <!--pose>0 0.020 0 1.5707 0 0</pose-->
         <geometry>
           <cylinder>
             <radius>0.022</radius>
@@ -122,6 +164,7 @@
       </inertial>
       <collision name="collision_right_wheel">
         <pose>0 -0.00075 0 1.5707 0 0</pose>
+        <!--pose>0 -0.020 0 1.5707 0 0</pose-->
         <geometry>
           <cylinder>
             <radius>0.022</radius>
@@ -157,5 +200,18 @@
         <xyz>0 1 0</xyz>
       </axis>
     </joint>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100</updateRate>
+      <leftJoint>right_wheel_hinge</leftJoint>
+      <rightJoint>left_wheel_hinge</rightJoint>
+      <wheelSeparation>0.0955</wheelSeparation>
+      <wheelDiameter>0.044</wheelDiameter>
+      <torque>0.005</torque>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+    </plugin>
   </model>
 </sdf>
