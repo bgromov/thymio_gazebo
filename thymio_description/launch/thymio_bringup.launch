@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find thymio_description)/launch/thymio_gazebo.launch" />
+  <include file="$(find thymio_description)/launch/thymio_rviz.launch" />
+</launch>
