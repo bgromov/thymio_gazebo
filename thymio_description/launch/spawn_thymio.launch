@@ -1,7 +1,17 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro" />
+  <arg name="robot_ns" default="thymio" />
 
-  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="gui" value="false"/>
+    <arg name="headless" value="true"/>
+  </include>
 
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio" />
+  <param name="tf_prefix" value="$(arg robot_ns)" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro robot_ns:=$(arg robot_ns)" />
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio"/>
+
+  <node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher" ns="$(arg robot_ns)">
+    <param name="publish_frequency" value="30.0" />
+  </node>
 </launch>

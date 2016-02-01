@@ -2,51 +2,42 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="thymio">
   <xacro:arg name="robot_ns" default="thymio"/>
   <xacro:property name="robot_ns" value="$(arg robot_ns)"/>
-
   <xacro:macro name="proximity_sensor" params="name parent_link:=base_link xyz rpy update_rate:=15 range_min:=0.01 range_max:=0.200 resolution:=0.01">
     <link name="${name}_link">
       <inertial>
-        <mass value="0.0000001"/>
-        <inertia
-          ixx="1e-3" ixy="0" ixz="0"
-          iyy="1e-3" iyz="0"
-          izz="1e-3" />
+        <mass value="1e-3"/>
+        <inertia ixx="1e-3" ixy="0" ixz="0" iyy="1e-3" iyz="0" izz="1e-3"/>
       </inertial>
-      <gazebo reference="${name}_link">
-        <sensor name="${name}_sensor" type="ray">
-          <visualize>true</visualize>
-          <update_rate>${update_rate}</update_rate>
-          <always_on>true</always_on>
-          <ray>
-            <range>
-              <min>${range_min}</min>
-              <max>${range_max}</max>
-              <resolution>${resolution}</resolution>
-            </range>
-            <noise>
-              <type>gaussian</type>
-              <mean>0.0</mean>
-              <stddev>${resolution/2}</stddev>
-            </noise>
-          </ray>
-          <plugin name="${name}_controller" filename="libgazebo_ros_range.so">
-            <alwaysOn>true</alwaysOn>
-            <updateRate>${update_rate}</updateRate>
-            <robotNamespace>${robot_ns}</robotNamespace>
-            <frameName>${name}_link</frameName>
-            <topicName>${name}</topicName>
-            <radiation>infrared</radiation>
-          </plugin>
-        </sensor>
-      </gazebo>
     </link>
     <joint name="${name}_joint" type="fixed">
       <origin xyz="${xyz}" rpy="${rpy}"/>
       <parent link="${parent_link}"/>
       <child link="${name}_link"/>
     </joint>
+    <gazebo reference="${name}_link">
+      <sensor name="${name}_sensor" type="ray">
+        <visualize>true</visualize>
+        <update_rate>${update_rate}</update_rate>
+        <always_on>true</always_on>
+        <ray>
+          <range>
+            <min>${range_min}</min>
+            <max>${range_max}</max>
+            <resolution>${resolution}</resolution>
+          </range>
+        </ray>
+        <plugin name="${name}_controller" filename="libgazebo_ros_range.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>${update_rate}</updateRate>
+          <robotNamespace>${robot_ns}</robotNamespace>
+          <frameName>${name}_link</frameName>
+          <topicName>${name}</topicName>
+          <radiation>infrared</radiation>
+          <gaussianNoise>${resolution/2}</gaussianNoise>
+        </plugin>
+      </sensor>
+    </gazebo>
   </xacro:macro>
-
   <xacro:macro name="thymio_robot">
     <link name="base_link">
       <inertial>
@@ -81,6 +72,11 @@
       <axis xyz="0 1 0"/>
       <origin xyz="-0.025 0.047 0.013"/>
     </joint>
+    <gazebo reference="base_link">
+      <selfCollide>true</selfCollide>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
     <link name="left_wheel_link">
       <inertial>
         <mass value="0.025"/>
@@ -130,7 +126,26 @@
     <xacro:proximity_sensor name="proximity_rear_right" xyz="-0.055 -0.03 0.026" rpy="0 0 3.14159"/>
     <xacro:proximity_sensor name="ground_left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0"/>
     <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 0"/>
-  </xacro:macro>
 
+    <gazebo>
+      <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>100</updateRate>
+        <leftJoint>right_wheel_joint</leftJoint>
+        <rightJoint>left_wheel_joint</rightJoint>
+        <wheelSeparation>0.0955</wheelSeparation>
+        <wheelDiameter>0.044</wheelDiameter>
+        <torque>0.005</torque>
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <publishWheelJointState>true</publishWheelJointState>
+        <publishWheelTF>true</publishWheelTF>
+        <publishTf>1</publishTf>
+        <robotNamespace>${robot_ns}</robotNamespace>
+        <robotBaseFrame>base_link</robotBaseFrame>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
   <xacro:thymio_robot />
 </robot>
