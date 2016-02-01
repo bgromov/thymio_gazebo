@@ -1,7 +1,7 @@
 <launch>
-  <param name="robot_description" command="$(find xacro)/xacro.py $(find thymio_driver)/models/thymio.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro" />
 
-  <!--include file="$(find gazebo_ros)/launch/empty_world.launch" /-->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio" />
 </launch>
