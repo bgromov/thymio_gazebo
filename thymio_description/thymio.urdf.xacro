@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="thymio">
   <xacro:arg name="robot_ns" default="thymio"/>
   <xacro:property name="robot_ns" value="$(arg robot_ns)"/>
-  <xacro:macro name="proximity_sensor" params="name parent_link:=base_link xyz rpy update_rate:=15 range_min:=0.01 range_max:=0.200 resolution:=0.01">
+  <xacro:macro name="proximity_sensor" params="name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=0.06 resolution:=0.005 fov:=0.4">
     <link name="${name}_link">
       <inertial>
         <mass value="1e-3"/>
@@ -30,9 +30,10 @@
           <alwaysOn>true</alwaysOn>
           <updateRate>${update_rate}</updateRate>
           <robotNamespace>${robot_ns}</robotNamespace>
-          <frameName>${name}_link</frameName>
+          <frameName>${robot_ns}/${name}_link</frameName>
           <topicName>${name}</topicName>
           <radiation>infrared</radiation>
+          <fov>${fov}</fov>
           <gaussianNoise>${resolution/2}</gaussianNoise>
         </plugin>
       </sensor>
@@ -117,7 +118,7 @@
         </geometry>
       </visual>
     </link>
-    <xacro:proximity_sensor name="proximity_center" xyz="0.055 0 0.026" rpy="0 0 0"/>
+    <!--xacro:proximity_sensor name="proximity_center" xyz="0.055 0 0.026" rpy="0 0 0"/>
     <xacro:proximity_sensor name="proximity_center_left" xyz="0.0509 0.0252 0.026" rpy="0 0 0.32"/>
     <xacro:proximity_sensor name="proximity_center_right" xyz="0.0509 -0.0252 0.026" rpy="0 0 -0.32"/>
     <xacro:proximity_sensor name="proximity_left" xyz="0.0392 0.0478 0.026" rpy="0 0 0.64"/>
@@ -125,7 +126,17 @@
     <xacro:proximity_sensor name="proximity_rear_left" xyz="-0.055 0.03 0.026" rpy="0 0 3.14159"/>
     <xacro:proximity_sensor name="proximity_rear_right" xyz="-0.055 -0.03 0.026" rpy="0 0 3.14159"/>
     <xacro:proximity_sensor name="ground_left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0"/>
-    <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 0"/>
+    <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 0"/-->
+
+    <xacro:proximity_sensor name="proximity_center" xyz="0.055 0 0.026" rpy="0 0 0"/>
+    <xacro:proximity_sensor name="proximity_center_left" xyz="0.0506 0.0261 0.026" rpy="0 0 0.33161"/>
+    <xacro:proximity_sensor name="proximity_center_right" xyz="0.0506 -0.0261 0.026" rpy="0 0 -0.33161"/>
+    <xacro:proximity_sensor name="proximity_left" xyz="0.0380 0.0493 0.026" rpy="0 0 0.66323"/>
+    <xacro:proximity_sensor name="proximity_right" xyz="0.0380 -0.0493 0.026" rpy="0 0 -0.66323"/>
+    <xacro:proximity_sensor name="proximity_rear_left" xyz="-0.055 0.0305 0.026" rpy="0 0 3.14159"/>
+    <xacro:proximity_sensor name="proximity_rear_right" xyz="-0.055 -0.0305 0.026" rpy="0 0 3.14159"/>
+    <xacro:proximity_sensor name="ground_left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0.24311"/>
+    <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 -0.24311"/>
 
     <gazebo>
       <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
@@ -135,7 +146,7 @@
         <rightJoint>left_wheel_joint</rightJoint>
         <wheelSeparation>0.0955</wheelSeparation>
         <wheelDiameter>0.044</wheelDiameter>
-        <torque>0.005</torque>
+        <wheelTorque>0.005</wheelTorque>
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
