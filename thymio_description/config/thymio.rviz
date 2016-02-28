@@ -5,10 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
-        - /RobotModel1/Status1
         - /RobotModel1/Links1
-        - /TF1/Tree1
       Splitter Ratio: 0.723926
     Tree Height: 1222
   - Class: rviz/Selection
@@ -114,7 +111,7 @@ Visualization Manager:
           Value: true
       Name: RobotModel
       Robot Description: robot_description
-      TF Prefix: thymio
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -135,7 +132,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: thymio/odom
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:

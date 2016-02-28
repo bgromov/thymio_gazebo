@@ -7,7 +7,7 @@
   </include>
 
   <param name="tf_prefix" value="$(arg robot_ns)" />
-  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro use_ns:=1 robot_ns:=$(arg robot_ns)" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro use_ns:=true robot_ns:=$(arg robot_ns)" />
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio"/>
 
