@@ -1,8 +1,14 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="thymio">
-  <xacro:arg name="robot_ns" default="thymio"/>
-  <xacro:property name="robot_ns" value="$(arg robot_ns)"/>
-  <xacro:macro name="proximity_sensor" params="name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=0.06 resolution:=0.005 fov:=0.4">
+  <xacro:arg name="use_ns" default="0"/>
+  <xacro:arg name="robot_ns" default=""/>
+  <xacro:if value="$(arg use_ns)">
+    <xacro:property name="robot_ns" value="$(arg robot_ns)"/>
+  </xacro:if>
+  <xacro:unless value="$(arg use_ns)">
+    <xacro:property name="robot_ns" value=""/>
+  </xacro:unless>
+  <xacro:macro name="proximity_sensor" params="name topic_name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=0.06 resolution:=0.005 fov:=0.4">
     <link name="${name}_link">
       <inertial>
         <mass value="1e-3"/>
@@ -29,9 +35,11 @@
         <plugin name="${name}_controller" filename="libgazebo_ros_range.so">
           <alwaysOn>true</alwaysOn>
           <updateRate>${update_rate}</updateRate>
-          <robotNamespace>${robot_ns}</robotNamespace>
+          <xacro:if value="$(arg use_ns)">
+            <robotNamespace>${robot_ns}</robotNamespace>
+          </xacro:if>
           <frameName>${robot_ns}/${name}_link</frameName>
-          <topicName>${name}</topicName>
+          <topicName>${topic_name}</topicName>
           <radiation>infrared</radiation>
           <fov>${fov}</fov>
           <gaussianNoise>${resolution/2}</gaussianNoise>
@@ -128,15 +136,15 @@
     <xacro:proximity_sensor name="ground_left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0"/>
     <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 0"/-->
 
-    <xacro:proximity_sensor name="proximity_center" xyz="0.055 0 0.026" rpy="0 0 0"/>
-    <xacro:proximity_sensor name="proximity_center_left" xyz="0.0506 0.0261 0.026" rpy="0 0 0.33161"/>
-    <xacro:proximity_sensor name="proximity_center_right" xyz="0.0506 -0.0261 0.026" rpy="0 0 -0.33161"/>
-    <xacro:proximity_sensor name="proximity_left" xyz="0.0380 0.0493 0.026" rpy="0 0 0.66323"/>
-    <xacro:proximity_sensor name="proximity_right" xyz="0.0380 -0.0493 0.026" rpy="0 0 -0.66323"/>
-    <xacro:proximity_sensor name="proximity_rear_left" xyz="-0.055 0.0305 0.026" rpy="0 0 3.14159"/>
-    <xacro:proximity_sensor name="proximity_rear_right" xyz="-0.055 -0.0305 0.026" rpy="0 0 3.14159"/>
-    <xacro:proximity_sensor name="ground_left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0.24311"/>
-    <xacro:proximity_sensor name="ground_right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 -0.24311"/>
+    <xacro:proximity_sensor name="proximity_center" topic_name="proximity/center" xyz="0.055 0 0.026" rpy="0 0 0"/>
+    <xacro:proximity_sensor name="proximity_center_left" topic_name="proximity/center_left" xyz="0.0506 0.0261 0.026" rpy="0 0 0.33161"/>
+    <xacro:proximity_sensor name="proximity_center_right" topic_name="proximity/center_right" xyz="0.0506 -0.0261 0.026" rpy="0 0 -0.33161"/>
+    <xacro:proximity_sensor name="proximity_left" topic_name="proximity/left" xyz="0.0380 0.0493 0.026" rpy="0 0 0.66323"/>
+    <xacro:proximity_sensor name="proximity_right" topic_name="proximity/right" xyz="0.0380 -0.0493 0.026" rpy="0 0 -0.66323"/>
+    <xacro:proximity_sensor name="proximity_rear_left" topic_name="proximity/rear_left" xyz="-0.055 0.0305 0.026" rpy="0 0 3.14159"/>
+    <xacro:proximity_sensor name="proximity_rear_right" topic_name="proximity/rear_right" xyz="-0.055 -0.0305 0.026" rpy="0 0 3.14159"/>
+    <xacro:proximity_sensor name="ground_left" topic_name="ground/left" xyz="0.04657 0.01155 0.0" rpy="0 1.5708 0.24311"/>
+    <xacro:proximity_sensor name="ground_right" topic_name="ground/right" xyz="0.04657 -0.01155 0.0" rpy="0 1.5708 -0.24311"/>
 
     <gazebo>
       <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
@@ -153,7 +161,9 @@
         <publishWheelJointState>true</publishWheelJointState>
         <publishWheelTF>true</publishWheelTF>
         <publishTf>1</publishTf>
-        <robotNamespace>${robot_ns}</robotNamespace>
+        <xacro:if value="$(arg use_ns)">
+          <robotNamespace>${robot_ns}</robotNamespace>
+        </xacro:if>
         <robotBaseFrame>base_link</robotBaseFrame>
       </plugin>
     </gazebo>
