@@ -4,6 +4,7 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="gui" value="false"/>
     <arg name="headless" value="true"/>
+    <arg name="world_name" value="$(find thymio_description)/can_population.world"/>
   </include>
 
   <param name="tf_prefix" value="$(arg robot_ns)" />
