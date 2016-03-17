@@ -5,11 +5,11 @@
     <arg name="gui" value="false"/>
     <arg name="headless" value="true"/>
     <arg name="paused" value="true"/>
-    <arg name="world_name" value="$(find thymio_description)/maze_world.world"/>
+    <arg name="world_name" value="$(find thymio_description)/worlds/maze_world.world"/>
   </include>
 
   <param name="tf_prefix" value="$(arg robot_ns)" />
-  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/models/thymio.urdf.xacro" />
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio -z 0.01"/>
 
