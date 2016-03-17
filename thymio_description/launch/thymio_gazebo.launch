@@ -4,15 +4,20 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="gui" value="false"/>
     <arg name="headless" value="true"/>
-    <arg name="world_name" value="$(find thymio_description)/can_population.world"/>
+    <arg name="paused" value="true"/>
+    <arg name="world_name" value="$(find thymio_description)/maze_world.world"/>
   </include>
 
   <param name="tf_prefix" value="$(arg robot_ns)" />
   <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/thymio.urdf.xacro" />
 
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio -z 0.01"/>
 
   <node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher">
     <param name="publish_frequency" value="30.0" />
+  </node>
+
+  <node name="thymio_base_link_pose" type="gazebo_link_pose" pkg="thymio_description">
+    <param name="link_name" value="thymio::base_link" />
   </node>
 </launch>

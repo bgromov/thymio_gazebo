@@ -8,7 +8,7 @@
   </material>
   <xacro:arg name="use_ns" default="false"/>
   <xacro:arg name="robot_ns" default=""/>
-  <xacro:macro name="proximity_sensor" params="name topic_name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=0.06 resolution:=0.005 fov:=0.4">
+  <xacro:macro name="proximity_sensor" params="name topic_name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=1.0 resolution:=0.005 fov:=0.4">
     <link name="${name}_link">
       <inertial>
         <mass value="1e-3"/>
