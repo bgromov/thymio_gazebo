@@ -5,13 +5,13 @@
     <arg name="gui" value="false"/>
     <arg name="headless" value="true"/>
     <arg name="paused" value="true"/>
-    <arg name="world_name" value="$(find thymio_description)/worlds/maze_world.world"/>
+    <arg name="world_name" value="$(find thymio_description)/worlds/bug_world.world"/>
   </include>
 
   <param name="tf_prefix" value="$(arg robot_ns)" />
   <param name="robot_description" command="$(find xacro)/xacro $(find thymio_description)/models/thymio.urdf.xacro" />
 
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio -z 0.01"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model thymio -x -1.0 -y 1.0 -z 0.002"/>
 
   <node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher">
     <param name="publish_frequency" value="30.0" />
@@ -19,5 +19,12 @@
 
   <node name="thymio_base_link_pose" type="gazebo_link_pose" pkg="thymio_description">
     <param name="link_name" value="thymio::base_link" />
+    <param name="publish_rate" value="100" />
+  </node>
+  <node name="thymio_start_pose" type="gazebo_link_pose" pkg="thymio_description">
+    <param name="link_name" value="start::pose" />
+  </node>
+  <node name="thymio_target_pose" type="gazebo_link_pose" pkg="thymio_description">
+    <param name="link_name" value="target::pose" />
   </node>
 </launch>
