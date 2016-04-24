@@ -6,6 +6,13 @@
   <material name="black">
     <color rgba="0.175 0.175 0.175 1.0"/>
   </material>
+
+  <xacro:arg name="left_wheel_mu" default="100.0"/>
+  <xacro:property name="left_wheel_mu_p" value="$(arg left_wheel_mu)"/>
+
+  <xacro:arg name="right_wheel_mu" default="100.0"/>
+  <xacro:property name="right_wheel_mu_p" value="$(arg right_wheel_mu)"/>
+
   <xacro:arg name="use_ns" default="false"/>
   <xacro:arg name="robot_ns" default=""/>
   <xacro:macro name="proximity_sensor" params="name topic_name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=1.0 resolution:=0.005 fov:=0.4">
@@ -122,6 +129,8 @@
       </visual>
     </link>
     <gazebo reference="left_wheel_link">
+      <mu1>${left_wheel_mu_p}</mu1>
+      <mu2>${left_wheel_mu_p / 2.0}</mu2>
       <material>Gazebo/DarkGrey</material>
     </gazebo>
     <joint name="right_wheel_joint" type="continuous">
@@ -149,6 +158,8 @@
       </visual>
     </link>
     <gazebo reference="right_wheel_link">
+      <mu1>${right_wheel_mu_p}</mu1>
+      <mu2>${right_wheel_mu_p / 2.0}</mu2>
       <material>Gazebo/DarkGrey</material>
     </gazebo>
     <!--xacro:proximity_sensor name="proximity_center" xyz="0.055 0 0.026" rpy="0 0 0"/>
