@@ -13,6 +13,14 @@
   <xacro:arg name="right_wheel_mu" default="100.0"/>
   <xacro:property name="right_wheel_mu_p" value="$(arg right_wheel_mu)"/>
 
+  <xacro:arg name="mass" default="0.200"/>
+  <xacro:property name="mass_p" value="$(arg mass)"/>
+
+  <!-- Body mass is 80% of total mass -->
+  <xacro:property name="body_mass" value="${mass_p * 0.80}"/>
+  <!-- Each wheel is 10% of total mass -->
+  <xacro:property name="wheel_mass" value="${mass_p * 0.10}"/>
+
   <xacro:arg name="use_ns" default="false"/>
   <xacro:arg name="robot_ns" default=""/>
   <xacro:macro name="proximity_sensor" params="name topic_name parent_link:=base_link xyz rpy update_rate:=10 range_min:=0.005 range_max:=1.0 resolution:=0.005 fov:=0.4">
@@ -61,8 +69,8 @@
   <xacro:macro name="thymio_robot">
     <link name="base_link">
       <inertial>
-        <mass value="0.200"/>
-        <inertia ixx="0.00024282" ixy="0" ixz="0" iyy="0.00023542" iyz="0" izz="0.00041073"/>
+        <mass value="${body_mass}"/>
+        <inertia ixx="${0.0012141 * body_mass}" ixy="0" ixz="0" iyy="${0.0011771 * body_mass}" iyz="0" izz="${0.00205365 * body_mass}"/>
       </inertial>
       <collision>
         <geometry>
@@ -112,8 +120,8 @@
     </gazebo>
     <link name="left_wheel_link">
       <inertial>
-        <mass value="0.025"/>
-        <inertia ixx="0.00000363" ixy="0" ixz="0" iyy="0.00000605" iyz="0" izz="0.00000363"/>
+        <mass value="${wheel_mass}"/>
+        <inertia ixx="${0.0001452 * wheel_mass}" ixy="0" ixz="0" iyy="${0.000242 * wheel_mass}" iyz="0" izz="${0.0001452 * wheel_mass}"/>
       </inertial>
       <collision>
         <origin xyz="0 0.00175 0" rpy="1.5707 0 0"/>
@@ -141,8 +149,8 @@
     </joint>
     <link name="right_wheel_link">
       <inertial>
-        <mass value="0.025"/>
-        <inertia ixx="0.00000363" ixy="0" ixz="0" iyy="0.00000605" iyz="0" izz="0.00000363"/>
+        <mass value="${wheel_mass}"/>
+        <inertia ixx="${0.0001452 * wheel_mass}" ixy="0" ixz="0" iyy="${0.000242 * wheel_mass}" iyz="0" izz="${0.0001452 * wheel_mass}"/>
       </inertial>
       <collision>
         <origin xyz="0 -0.00175 0" rpy="1.5707 0 0"/>
